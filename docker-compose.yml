@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:13.2
+    env_file:
+      - ./dotenv/db.env
+
+  api:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/api.Dockerfile
+    image: nuxtdjango-api
+    env_file:
+      - ./dotenv/api.env
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./api/:/usr/src/nuxtdjango-api/
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  client:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/client.Dockerfile
+    image: nuxtdjango-client
+    env_file:
+      - ./dotenv/client.env
+    command: npm run dev
+    volumes:
+      - ./client/:/usr/src/nuxtdjango-client/
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
