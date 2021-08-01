@@ -14,25 +14,37 @@
 
 <script>
 export default {
+  props: {
+    instance: {
+      type: Object,
+      default: null,
+      required: false,
+    },
+  },
   data() {
+    const form = {
+      titulo: "",
+      descricao: "",
+      concluido: false,
+    };
+    if (this.instance) {
+      Object.assign(form, this.instance);
+    }
     return {
       valid: true,
-      form: {
-        titulo: "",
-        descricao: "",
-        concluido: false,
-      },
+      form: form,
     };
   },
   methods: {
-    createTodo: async function () {
-      console.log(this.form);
-      // try {
-      //   const response = await this.$axios.post("/todos", this.form);
-      //   const todo = response.data;
-      // } catch (e) {
-      //   console.log(e);
-      // }
+    reset() {
+      this.$refs.form.reset();
+    },
+    create: function () {
+      this.$store.dispatch("create", this.form);
+      this.reset();
+    },
+    update: function () {
+      this.$store.dispatch("update", { url: this.form.url, todo: this.form });
     },
   },
 };

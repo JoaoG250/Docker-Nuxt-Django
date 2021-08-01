@@ -32,15 +32,11 @@ export default {
     };
   },
   props: {
-    id: Number,
+    url: String,
   },
   methods: {
-    deleteTodo: async function () {
-      try {
-        const response = await this.$axios.delete(`/todos/${this.id}/`);
-      } catch (e) {
-        console.log(e);
-      }
+    deleteTodo: function () {
+      this.$store.dispatch("delete", this.url);
     },
   },
 };

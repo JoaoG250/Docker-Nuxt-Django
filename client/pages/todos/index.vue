@@ -18,25 +18,16 @@ export default {
   data() {
     return {
       concluidos: false,
-      todos: [],
     };
   },
   created: function () {
-    this.getTodos();
+    this.$store.dispatch("fetch");
   },
   computed: {
     filteredTodos: function () {
-      return this.todos.filter((item) => item.concluido === this.concluidos);
-    },
-  },
-  methods: {
-    getTodos: async function () {
-      try {
-        const response = await this.$axios.get("/todos");
-        this.todos = response.data;
-      } catch (e) {
-        console.log(e);
-      }
+      return this.$store.state.list.filter(
+        (item) => item.concluido === this.concluidos
+      );
     },
   },
 };
