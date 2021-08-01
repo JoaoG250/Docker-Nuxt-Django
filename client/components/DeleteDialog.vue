@@ -10,7 +10,15 @@
       <v-divider></v-divider>
       <v-card-actions class="justify-space-around">
         <v-btn color="secondary" @click="dialog = false"> Não </v-btn>
-        <v-btn color="primary" @click="dialog = false"> Sim </v-btn>
+        <v-btn
+          color="primary"
+          @click="
+            deleteTodo();
+            dialog = false;
+          "
+        >
+          Sim
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -22,6 +30,18 @@ export default {
     return {
       dialog: false,
     };
+  },
+  props: {
+    id: Number,
+  },
+  methods: {
+    deleteTodo: async function () {
+      try {
+        const response = await this.$axios.delete(`/todos/${this.id}/`);
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
 };
 </script>

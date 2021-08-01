@@ -7,7 +7,7 @@
       {{ todo.descricao }}
       <v-divider class="my-2"></v-divider>
       <div class="d-flex justify-end">
-        <delete-dialog></delete-dialog>
+        <delete-dialog :id="todo.id"></delete-dialog>
         <edit-dialog></edit-dialog>
       </div>
     </v-expansion-panel-content>
