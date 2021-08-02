@@ -1,14 +1,22 @@
 <template>
   <v-form ref="form" v-model="valid" lazy-validation>
-    <v-text-field v-model="form.titulo" label="Título" required></v-text-field>
-
-    <v-text-field v-model="form.descricao" label="Descrição"></v-text-field>
-
-    <v-checkbox
-      v-model="form.concluido"
-      label="Concluído?"
+    <v-text-field
+      v-model="form.titulo"
+      label="Título"
+      :rules="required"
+      :error-messages="errors.titulo"
       required
-    ></v-checkbox>
+    ></v-text-field>
+
+    <v-text-field
+      v-model="form.descricao"
+      label="Descrição"
+      :rules="required"
+      :error-messages="errors.descricao"
+      required
+    ></v-text-field>
+
+    <v-checkbox v-model="form.concluido" label="Concluído?"></v-checkbox>
   </v-form>
 </template>
 
@@ -33,29 +41,44 @@ export default {
     return {
       valid: true,
       form: form,
+      errors: {},
+      required: [(v) => !!v || "Este campo não pode ser em branco."],
     };
   },
   methods: {
     reset() {
       this.$refs.form.reset();
     },
-    onErrors(errors) {
-      const data = errors.response.data;
-      console.log(data);
+    onErrors(err) {
+      this.errors = err.response.data;
     },
     create: function () {
-      const action = this.$store.dispatch("create", this.form);
-      action
-        .then((resp) => {
-          this.reset();
-          this.$store.dispatch("fetch");
-        })
-        .catch((e) => {
-          this.onErrors(e);
-        });
+      if (this.valid) {
+        const action = this.$store.dispatch("create", this.form);
+        action
+          .then((resp) => {
+            this.reset();
+            this.$store.dispatch("fetch");
+          })
+          .catch((e) => {
+            this.onErrors(e);
+          });
+      }
     },
     update: function () {
-      this.$store.dispatch("update", { url: this.form.url, todo: this.form });
+      if (this.valid) {
+        const action = this.$store.dispatch("update", {
+          url: this.form.url,
+          todo: this.form,
+        });
+        action
+          .then((resp) => {
+            this.$store.dispatch("fetch");
+          })
+          .catch((e) => {
+            this.onErrors(e);
+          });
+      }
     },
   },
 };
