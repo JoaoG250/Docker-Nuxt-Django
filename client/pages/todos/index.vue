@@ -1,9 +1,10 @@
 <template>
   <div>
+    <div class="text-h2 mb-5 text-center">Pendências</div>
     <create-dialog></create-dialog>
     <v-tabs>
-      <v-tab @click="concluidos = false">Não Concluídos</v-tab>
-      <v-tab @click="concluidos = true">Concluídos</v-tab>
+      <v-tab @click="done = false">Não Concluídas</v-tab>
+      <v-tab @click="done = true">Concluídas</v-tab>
     </v-tabs>
     <v-expansion-panels>
       <template v-for="todo in filteredTodos">
@@ -17,7 +18,7 @@
 export default {
   data() {
     return {
-      concluidos: false,
+      done: false,
     };
   },
   created: function () {
@@ -26,7 +27,7 @@ export default {
   computed: {
     filteredTodos: function () {
       return this.$store.state.list.filter(
-        (item) => item.concluido === this.concluidos
+        (item) => item.concluido === this.done
       );
     },
   },

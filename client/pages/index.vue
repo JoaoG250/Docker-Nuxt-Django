@@ -1,8 +1,10 @@
 <template>
   <div>
-    <h1>Todos</h1>
-    <p>your todo list.</p>
-    <v-btn href="/todos">View todos</v-btn>
+    <h1 class="text-h1 mb-3">Pendências</h1>
+    <p class="text-h4 mb-5">
+      Mais um aplicativo para guardar suas tarefas pendentes
+    </p>
+    <v-btn href="/todos" color="teal" x-large nuxt>Ver Pendências</v-btn>
   </div>
 </template>
 

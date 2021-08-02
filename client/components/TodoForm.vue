@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" v-model="valid" lazy-validation>
+  <v-form ref="form" v-model="valid">
     <v-text-field
       v-model="form.titulo"
       label="Título"
@@ -16,7 +16,7 @@
       required
     ></v-text-field>
 
-    <v-checkbox v-model="form.concluido" label="Concluído?"></v-checkbox>
+    <v-checkbox v-model="form.concluido" label="Concluída?"></v-checkbox>
   </v-form>
 </template>
 
@@ -49,6 +49,9 @@ export default {
     reset() {
       this.$refs.form.reset();
     },
+    validate() {
+      this.$refs.form.validate();
+    },
     onErrors(err) {
       this.errors = err.response.data;
     },
@@ -59,10 +62,13 @@ export default {
           .then((resp) => {
             this.reset();
             this.$store.dispatch("fetch");
+            this.$emit("success");
           })
           .catch((e) => {
             this.onErrors(e);
           });
+      } else {
+        this.validate();
       }
     },
     update: function () {
@@ -74,10 +80,13 @@ export default {
         action
           .then((resp) => {
             this.$store.dispatch("fetch");
+            this.$emit("success");
           })
           .catch((e) => {
             this.onErrors(e);
           });
+      } else {
+        this.validate();
       }
     },
   },
