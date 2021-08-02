@@ -39,9 +39,20 @@ export default {
     reset() {
       this.$refs.form.reset();
     },
+    onErrors(errors) {
+      const data = errors.response.data;
+      console.log(data);
+    },
     create: function () {
-      this.$store.dispatch("create", this.form);
-      this.reset();
+      const action = this.$store.dispatch("create", this.form);
+      action
+        .then((resp) => {
+          this.reset();
+          this.$store.dispatch("fetch");
+        })
+        .catch((e) => {
+          this.onErrors(e);
+        });
     },
     update: function () {
       this.$store.dispatch("update", { url: this.form.url, todo: this.form });

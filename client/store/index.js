@@ -17,28 +17,16 @@ export const actions = {
             console.log(e);
         }
     },
-    async create({ dispatch, commit }, todo) {
-        try {
-            await this.$axios.post("/todos/", todo);
-            await dispatch("fetch");
-        } catch (e) {
-            console.log(e);
-        }
+    async create({ commit }, todo) {
+        const response = await this.$axios.post("/todos/", todo);
+        return response;
     },
-    async update({ dispatch, commit }, { url, todo }) {
-        try {
-            await this.$axios.put(url, todo);
-            await dispatch("fetch");
-        } catch (e) {
-            console.log(e);
-        }
+    async update({ commit }, { url, todo }) {
+        const response = await this.$axios.put(url, todo);
+        return response;
     },
-    async delete({ dispatch, commit }, url) {
-        try {
-            await this.$axios.delete(url);
-            await dispatch("fetch");
-        } catch (e) {
-            console.log(e);
-        }
+    async delete({ commit }, url) {
+        const response = await this.$axios.delete(url);
+        return response;
     }
 };
