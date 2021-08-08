@@ -36,7 +36,9 @@ export default {
   },
   methods: {
     deleteTodo: function () {
-      this.$store.dispatch("delete", this.url);
+      this.$store.dispatch("delete", this.url).then(() => {
+        this.$store.dispatch("fetch");
+      });
     },
   },
 };
